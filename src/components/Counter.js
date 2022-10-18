@@ -14,6 +14,7 @@ const Counter = () => {
   // when we use useSelector it automatically sets up a subscription to the state and updates whenever the state changes, which re-executes the component
   // if we remove this component from the app react-redux would automatically remove the subscription for me
   const counter = useSelector((state) => state.counter);
+  const show = useSelector((state) => state.showCounter);
 
   // gives us a dispatch function that we can call against our redux store
   const dispatch = useDispatch();
@@ -30,12 +31,14 @@ const Counter = () => {
     dispatch({ type: 'decrement' });
   };
 
-  const toggleCounterHandler = () => {};
+  const toggleCounterHandler = () => {
+    dispatch({ type: 'toggle' });
+  };
 
   return (
     <main className={classes.counter}>
       <h1>Redux Counter</h1>
-      <div className={classes.value}>{counter}</div>
+      {show && <div className={classes.value}>{counter}</div>}
       <div>
         <button onClick={incrementHandler}>Increment</button>
         <button onClick={increaseHandler}>Increase by 10</button>
