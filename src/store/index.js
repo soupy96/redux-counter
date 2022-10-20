@@ -1,5 +1,4 @@
-import { createStore } from 'redux';
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, configureStore } from '@reduxjs/toolkit';
 
 const initialState = { counter: 0, showCounter: true };
 
@@ -11,7 +10,7 @@ const initialState = { counter: 0, showCounter: true };
 // each method needs to take in the state
 // in the object we are allowed to mutate the state bccause with redux toolkit we cant accidentally manipulate the existing state
 // as well as recieving the state the methods can recieve the action payload. its not required but optional
-createSlice({
+const counterSlice = createSlice({
   name: 'counter',
   initialState,
   reducers: {
@@ -30,39 +29,14 @@ createSlice({
   },
 });
 
-const counterReducer = (state = initialState, action) => {
-  if (action.type === 'increment') {
-    // you need to return everything in the state cause redux doesnt merge everything in the existing state it replaces it
-    // never change/mutate the OG state
-    // always copy and create new objects
-    return {
-      counter: state.counter + 1,
-      showCounter: state.showCounter,
-    };
-  }
-  if (action.type === 'increase') {
-    return {
-      counter: state.counter + action.amount,
-      showCounter: state.showCounter,
-    };
-  }
-  if (action.type === 'decrement') {
-    return {
-      counter: state.counter - 1,
-      showCounter: state.showCounter,
-    };
-  }
-
-  if (action.type === 'toggle') {
-    return {
-      counter: state.counter,
-      showCounter: !state.showCounter,
-    };
-  }
-
-  return state;
-};
-
-const store = createStore(counterReducer);
+// we give createStore the slice that we just created as well as ".reducer to give access to the reducer functions that we created"
+// only one slice can be passed into createStore and with multiple slices this can create a problem
+// to solve this problem we use configureStore from the reduxjs/toolkit which takes in a object
+// the reducer property is expected which you put in your reducer
+// if we are using multiple reducers/slices we give the reducer property on object
+// they key names are determined by me and the the values are the different slices reducers, an object of all the different slices that I would create as well as their reducers
+const store = configureStore({
+  reducer: counterSlice.reducer,
+});
 
 export default store;
