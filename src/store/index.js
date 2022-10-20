@@ -21,13 +21,18 @@ const counterSlice = createSlice({
       state.counter--;
     },
     increase(state, action) {
-      state.counter = state.counter + action.amount;
+      // when we need to access the data that we are passing through as a payload we need to access the payload property
+      state.counter = state.counter + action.payload;
     },
     toggleCounter(state) {
       state.showCounter = !state.showCounter;
     },
   },
 });
+
+// in order to dispatch actions we acces the slice that we created and access the "actions" keyword where all of our reducers that we created are stored
+// they all automatically have an unique identifiers per action
+// counterSlice.actions.toggleCounter();
 
 // we give createStore the slice that we just created as well as ".reducer to give access to the reducer functions that we created"
 // only one slice can be passed into createStore and with multiple slices this can create a problem
@@ -39,4 +44,6 @@ const store = configureStore({
   reducer: counterSlice.reducer,
 });
 
+// we export our counterActions as well as our store
+export const counterActions = counterSlice.actions;
 export default store;

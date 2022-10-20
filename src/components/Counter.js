@@ -6,6 +6,7 @@
 // import { render } from 'react-dom';
 import { useSelector, useDispatch, connect } from 'react-redux';
 
+import { counterActions } from '../store/index';
 import classes from './Counter.module.css';
 
 const Counter = () => {
@@ -20,19 +21,22 @@ const Counter = () => {
   const dispatch = useDispatch();
 
   const incrementHandler = () => {
-    dispatch({ type: 'increment' });
+    // when we're dispatching actions with slices we need to execute the method and not just point to it
+    dispatch(counterActions.increment());
   };
 
   const increaseHandler = () => {
-    dispatch({ type: 'increase', amount: 10 });
+    // when we need to send a payload we pass it through the method
+    // we pass an object with any key value pairs of our choice or just a single number
+    dispatch(counterActions.increase(10)); // { type: SOME_UNIQUE_INDENTIFIER, payload: 10 }
   };
 
   const decrementHandler = () => {
-    dispatch({ type: 'decrement' });
+    dispatch(counterActions.decrement());
   };
 
   const toggleCounterHandler = () => {
-    dispatch({ type: 'toggle' });
+    dispatch(counterActions.toggleCounter());
   };
 
   return (
