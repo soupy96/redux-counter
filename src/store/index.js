@@ -1,6 +1,6 @@
 import { createSlice, configureStore } from '@reduxjs/toolkit';
 
-const initialState = { counter: 0, showCounter: true };
+const initialCounterState = { counter: 0, showCounter: true };
 
 // createSlice() needs an object
 // creating a slice of our global state that are similar, you can make more than one slice for different things
@@ -12,7 +12,7 @@ const initialState = { counter: 0, showCounter: true };
 // as well as recieving the state the methods can recieve the action payload. its not required but optional
 const counterSlice = createSlice({
   name: 'counter',
-  initialState,
+  initialState: initialCounterState,
   reducers: {
     increment(state) {
       state.counter++;
@@ -30,6 +30,21 @@ const counterSlice = createSlice({
   },
 });
 
+const initialAuthState = { isAuthenticated: false };
+
+const authSlice = createSlice({
+  name: 'auth',
+  initialState: initialAuthState,
+  reducers: {
+    login(state) {
+      state.isAuthenticated = true;
+    },
+    logout(state) {
+      state.isAuthenticated = false;
+    },
+  },
+});
+
 // in order to dispatch actions we acces the slice that we created and access the "actions" keyword where all of our reducers that we created are stored
 // they all automatically have an unique identifiers per action
 // counterSlice.actions.toggleCounter();
@@ -41,9 +56,10 @@ const counterSlice = createSlice({
 // if we are using multiple reducers/slices we give the reducer property on object
 // they key names are determined by me and the the values are the different slices reducers, an object of all the different slices that I would create as well as their reducers
 const store = configureStore({
-  reducer: counterSlice.reducer,
+  reducer: { counter: counterSlice.reducer, auth: authSlice.reducer },
 });
 
 // we export our counterActions as well as our store
 export const counterActions = counterSlice.actions;
+export const authActions = authSlice.actions;
 export default store;

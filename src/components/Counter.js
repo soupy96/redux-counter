@@ -4,7 +4,7 @@
 // use useDispatch to dispatch actions to our store
 // import { Component } from 'react';
 // import { render } from 'react-dom';
-import { useSelector, useDispatch, connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { counterActions } from '../store/index';
 import classes from './Counter.module.css';
@@ -14,8 +14,9 @@ const Counter = () => {
   // we passed the react-redux state into the function when it gets executed and executes the code on the right which returns what you need from state
   // when we use useSelector it automatically sets up a subscription to the state and updates whenever the state changes, which re-executes the component
   // if we remove this component from the app react-redux would automatically remove the subscription for me
-  const counter = useSelector((state) => state.counter);
-  const show = useSelector((state) => state.showCounter);
+  // when we are using more than one slice in the store we need to access the state in whatever key names that we originally setup
+  const counter = useSelector((state) => state.counter.counter);
+  const show = useSelector((state) => state.counter.showCounter);
 
   // gives us a dispatch function that we can call against our redux store
   const dispatch = useDispatch();
