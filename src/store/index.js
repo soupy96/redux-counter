@@ -1,49 +1,7 @@
-import { createSlice, configureStore } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 
-const initialCounterState = { counter: 0, showCounter: true };
-
-// createSlice() needs an object
-// creating a slice of our global state that are similar, you can make more than one slice for different things
-// every slice needs a name, a specific identifier
-// needs an intial state
-// add reducers, an object/map, of all the reducers that this state slice needs
-// each method needs to take in the state
-// in the object we are allowed to mutate the state bccause with redux toolkit we cant accidentally manipulate the existing state
-// as well as recieving the state the methods can recieve the action payload. its not required but optional
-const counterSlice = createSlice({
-  name: 'counter',
-  initialState: initialCounterState,
-  reducers: {
-    increment(state) {
-      state.counter++;
-    },
-    decrement(state) {
-      state.counter--;
-    },
-    increase(state, action) {
-      // when we need to access the data that we are passing through as a payload we need to access the payload property
-      state.counter = state.counter + action.payload;
-    },
-    toggleCounter(state) {
-      state.showCounter = !state.showCounter;
-    },
-  },
-});
-
-const initialAuthState = { isAuthenticated: false };
-
-const authSlice = createSlice({
-  name: 'auth',
-  initialState: initialAuthState,
-  reducers: {
-    login(state) {
-      state.isAuthenticated = true;
-    },
-    logout(state) {
-      state.isAuthenticated = false;
-    },
-  },
-});
+import counterReducer from './counter';
+import authReducer from './auth';
 
 // in order to dispatch actions we acces the slice that we created and access the "actions" keyword where all of our reducers that we created are stored
 // they all automatically have an unique identifiers per action
@@ -56,10 +14,7 @@ const authSlice = createSlice({
 // if we are using multiple reducers/slices we give the reducer property on object
 // they key names are determined by me and the the values are the different slices reducers, an object of all the different slices that I would create as well as their reducers
 const store = configureStore({
-  reducer: { counter: counterSlice.reducer, auth: authSlice.reducer },
+  reducer: { counter: counterReducer, auth: authReducer },
 });
 
-// we export our counterActions as well as our store
-export const counterActions = counterSlice.actions;
-export const authActions = authSlice.actions;
 export default store;
